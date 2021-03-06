@@ -6,24 +6,25 @@ clock = pygame.time.Clock()
 fps_limit = 60.0
 
 screen = pygame.display.set_mode([800,800])
-pygame.display.set_caption('Cul gras', clock)
+pygame.display.set_caption('Cul gras')
 
+centre = (400,400)
 posx = 400
 posy = 400
 
 #Vitesse linéare / vitesse diagonale
-vit = 10 
+vit = 10
 vitd = 5 
 
-color = (255,0,0)
-radius = 10
 
-'''
 class Cercle:
-    def __init__(self,color,radius):
+    def __init__(self,color,radius,surface=screen,center=centre):
+        self.surface = surface
         self.color = color
+        self.center = center
         self.radius = radius
-    pygame.draw.circle(screen, color, (400,400), radius)'''
+    def dessin_cercle(self):
+        pygame.draw.circle(self.surface, self.color, self.center, self.radius)
 
 running = True
 while running:
@@ -34,8 +35,8 @@ while running:
             running = False
 
     screen.fill((255,255,255))
-    circle = pygame.draw.circle(screen, (255,0,0), (posx, posy), 100)
-    '''circle1 = Cercle((255,0,0),100)'''
+    #circle = pygame.draw.circle(screen, (255,0,0), (posx, posy), 100)
+    circle1 = dessin_cercle(screen, (255,0,0), centre, 75)
     
     i = 0
     N = 0
