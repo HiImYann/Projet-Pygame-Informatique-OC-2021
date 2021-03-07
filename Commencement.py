@@ -15,18 +15,38 @@ centre = (posx,posy)
 #Vitesse
 vit = 10
 
+#Couleurs
 red = (255,0,0)
+orange = (255,150,0)
+yellow = (255,255,0)
+green = (0,255,0)
+aqua = (0,255,200)
+light_blue = (0,255,255)
+blue = (0,0,255)
+purple = (150,0,255)
+pink = (255,0,255)
 
-class Cercle:
-    def __init__(self,color,radius,surface=screen,center=centre):
-        self.surface = surface
-        self.color = color
-        self.center = center
-        self.radius = radius
-    def dessin_cercle(self):
-        pygame.draw.circle(self.surface, self.color, self.center, self.radius)
 
-cercle1 = Cercle(red,75,screen,(posx,posy))
+
+class Cercle():
+    def __init__(self,couleur,rayon):
+        pygame.sprite.Sprite.__init__(self)
+        self.couleur = couleur
+        self.rayon = rayon
+        self.position_x = 400
+        self.position_y = 400
+
+    def update(self): #fonction executée à chaque frame pour afficher l'objet
+        pygame.draw.circle(screen, self.couleur, (self.position_x,self.position_y), self.rayon)
+
+    def mouvements(self,x,y):
+        self.position_x += x
+        self.position_y += y
+        if self.position_x < 0 or self.position_x > 800 or self.position_y < 0 or self.position_y > 800:
+            self.position_x = 400
+            self.position_y = 400
+
+cercle1 = Cercle(aqua,75)
 
 running = True
 while running:
@@ -38,33 +58,24 @@ while running:
 
     screen.fill((255,255,255))
     #circle = pygame.draw.circle(screen, (255,0,0), (posx, posy), 100)
-    cercle1.dessin_cercle()
     
     i = 0
     N = 0
     for i in range(10):
-        pygame.draw.rect(screen, (0, 128, 255), pygame.Rect(1+N, 1+N, 60, 60))
+        pygame.draw.rect(screen, (pink), pygame.Rect(1+N, 1+N, 60, 60))
         i += 1
         N += 82
 
+    if pygame.key.get_pressed()[pygame.K_UP] == True:
+        cercle1.mouvements(0,-10)
+    if pygame.key.get_pressed()[pygame.K_RIGHT] == True:
+        cercle1.mouvements(10,0)
+    if pygame.key.get_pressed()[pygame.K_DOWN] == True:
+        cercle1.mouvements(0,10)
+    if pygame.key.get_pressed()[pygame.K_LEFT] == True:
+        cercle1.mouvements(-10,0)
 
-    keys = pygame.key.get_pressed() 
-    
-    if keys[pygame.K_LEFT]:
-        posx -= vit
-        print("gauche")
-
-    if keys[pygame.K_RIGHT]:
-        posx += vit
-        print("droite")
-
-    if keys[pygame.K_DOWN]:
-        posy += vit
-        print("bas")
-
-    if keys[pygame.K_UP]:
-        posy -= vit
-        print("haut")
+    cercle1.update()
 
     pygame.display.flip()
     
