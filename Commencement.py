@@ -1,19 +1,21 @@
-import pygame
-import time
-pygame.init()
+import pygame, time
 
+# -- Variables --
+
+pygame.init()
 clock = pygame.time.Clock()
 fps_limit = 60.0
 
-screen = pygame.display.set_mode([800,800])
-pygame.display.set_caption('Cul gras')
+resx = 1600 #Dimensions de la fenêtre, ici en 16/9
+resy = 900
+screen = pygame.display.set_mode([resx,resy]) #Définit la taille de la fenètre à 800 par 800 (pixels)
+pygame.display.set_caption('EL JUEGO') #Définit le nom de la fenètre
 
-posx = 400
-posy = 400
-centre = (posx,posy)
+posx = 0 #Variable position pour permettre aux objets de bouger
+posy = 0
+centre = (resx/2,resy/2)
 
-#Vitesse
-vit = 10
+vit = 10 #Vitesse
 
 #Couleurs
 red = (255,0,0)
@@ -27,14 +29,15 @@ purple = (150,0,255)
 pink = (255,0,255)
 
 
+# -- Classes --
 
 class Cercle():
     def __init__(self,couleur,rayon):
         pygame.sprite.Sprite.__init__(self)
         self.couleur = couleur
         self.rayon = rayon
-        self.position_x = 400
-        self.position_y = 400
+        self.position_x = resx/2
+        self.position_y = resy/2
 
     def update(self): #fonction executée à chaque frame pour afficher l'objet
         pygame.draw.circle(screen, self.couleur, (self.position_x,self.position_y), self.rayon)
@@ -42,11 +45,17 @@ class Cercle():
     def mouvements(self,x,y):
         self.position_x += x
         self.position_y += y
-        if self.position_x < 0 or self.position_x > 800 or self.position_y < 0 or self.position_y > 800:
-            self.position_x = 400
-            self.position_y = 400
+        '''if self.position_x < 0 or self.position_x > 800 or self.position_y < 0 or self.position_y > 800:
+            self.position_x = 1600
+            self.position_y = 900'''
+
+
+# -- Objets --
 
 cercle1 = Cercle(aqua,75)
+
+
+# -- Boucle du jeu --
 
 running = True
 while running:
