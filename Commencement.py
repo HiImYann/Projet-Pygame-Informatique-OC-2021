@@ -9,7 +9,6 @@ fps_limit = 60.0
 resx = 1600 #Dimensions de la fenêtre, ici en 16/9
 resy = 900
 screen = pygame.display.set_mode([resx,resy]) #Définit la taille de la fenètre à 800 par 800 (pixels)
-pygame.display.set_caption('EL JUEGO') #Définit le nom de la fenètre
 
 posx = 0 #Variable position pour permettre aux objets de bouger
 posy = 0
@@ -18,6 +17,8 @@ centre = (resx/2,resy/2)
 vit = 10 #Vitesse
 
 #Couleurs
+black = (0,0,0)
+white = (255,255,255)
 red = (255,0,0)
 orange = (255,150,0)
 yellow = (255,255,0)
@@ -59,7 +60,7 @@ cercle1 = Cercle(aqua,75)
 
 running = True
 while running:
-    clock.tick(fps_limit)
+    clock.tick(fps_limit) #Limite le nombre d'images par seconde du jeu à 60
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -85,6 +86,9 @@ while running:
         cercle1.mouvements(-10,0)
 
     cercle1.update()
+
+    print(pygame.time.get_ticks())
+    
 
     pygame.display.flip()
     
