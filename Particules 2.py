@@ -10,7 +10,10 @@ resx = 1600 #Dimensions de la fenêtre, ici en 16/9
 resy = 900
 screen = pygame.display.set_mode([resx,resy]) #Définit la taille de la fenètre à 800 par 800 (pixels)
 
-# -- Objets --
+# -- Classes --
+
+class Particule():
+    def __init__ 
 
 
 # -- Boucle du jeu --
@@ -23,6 +26,8 @@ while running:
             running = False
 
     screen.fill((0,0,0))
+
+    pygame.display.set_caption()
 
     pygame.display.flip()   
 pygame.quit()

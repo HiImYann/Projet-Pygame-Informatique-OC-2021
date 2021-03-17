@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, random
 
 # -- Variables --
 
@@ -55,6 +55,7 @@ class Cercle():
 
 cercle1 = Cercle(aqua,75)
 
+timedepart = 0
 
 # -- Boucle du jeu --
 
@@ -69,12 +70,14 @@ while running:
     screen.fill((255,255,255))
     #circle = pygame.draw.circle(screen, (255,0,0), (posx, posy), 100)
     
-    i = 0
-    N = 0
-    for i in range(10):
-        pygame.draw.rect(screen, (pink), pygame.Rect(1+N, 1+N, 60, 60))
-        i += 1
-        N += 82
+    
+    time = float(pygame.time.get_ticks())
+    
+    if time - timedepart > 1000:
+        pygame.draw.rect(screen, (pink), (random.randint(0,1600),random.randint(0,900),60,60))
+
+        
+        
 
     if pygame.key.get_pressed()[pygame.K_UP] == True:
         cercle1.mouvements(0,-10)
