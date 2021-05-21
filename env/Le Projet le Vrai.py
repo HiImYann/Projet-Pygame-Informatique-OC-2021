@@ -1,50 +1,51 @@
-import pygame, random
+import pygame, random   #Importe les modules nécessaires
 
 # -- Variables --
 
-pygame.init()
+pygame.init()   #Initialise pygame et définit une horloge interne de 60 image par secondes
 clock = pygame.time.Clock()
 fps_limit = 60.0
 
-resx = 626 #Dimensions of the window, aspect ratio of 16/9
+resx = 626 #Valeur des dimensions de la fenêtre (dimensions de l'image de fond)
 resy = 563
-screen = pygame.display.set_mode([resx,resy]) #Defines the window's size, here 1600x900 pixels
+screen = pygame.display.set_mode([resx,resy]) #Définit la dimension de la fenêtre pour le programme
 
-next_particle_time = 0
+next_particle_time = 0 #Crée une variable qui sera utilisée pour le créateur de particule
 
-background_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\background_image_no_clouds.jpg')
+background_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\background_image_no_clouds.jpg') #Image de fond
 
 # -- Classes --
 
 class Particle():
-    def __init__ (self,color,radius):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__ (self,color,radius): 
+        pygame.sprite.Sprite.__init__(self) #Nécessaire pour que python sache que c'est un sprite à afficher
         self.color = color
         self.radius = radius
         self.position_x = 313 
         self.position_y = 415
 
-    def update(self):
+    def update(self): #Sert à mettre à jour/dessiner les particules
         pygame.draw.circle(screen, self.color, (self.position_x,self.position_y),self.radius)
 
-    def random_movement(self):
+    def random_movement(self): #Sert à donner un mouvement aléatoire aux particules
         self.position_x += random.randint(-2,2)
         self.position_y -= random.randint(0,1)
 
-    def life(self):
+    def life(self): #Va être utile pour réduire la taille des particules graduellement
         self.radius -= 0.05
 
 
-
-cloud_image_1 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud1.png')
+#Image des 3 nuages différents
+cloud_image_1 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud1.png') 
 cloud_image_2 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud2.png')
 cloud_image_3 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud3.png')
 
+#Classes pour les 3 différents nuages avec leur position
 class Cloud1():
     def __init__(self,x,y):
         self.position_x = x
         self.position_y = y
-        screen.blit(cloud_image_1,(x,y))
+        screen.blit(cloud_image_1,(x,y)) #Sert à afficher un objet qui contient une image
 
 class Cloud2():
     def __init__(self,x,y):
@@ -59,7 +60,7 @@ class Cloud3():
         screen.blit(cloud_image_3,(x,y))
 
 
-firecamp_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\firecamp.png')
+firecamp_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\firecamp.png') #Image de la bûche
 
 class Firecamp():
     def __init__(self):
@@ -71,7 +72,7 @@ class Firecamp():
 
 # -- Listes --
 
-particles = []
+particles = [] #Crée une liste de particules pour le programme
 
 # -- Game loop --
 
@@ -82,14 +83,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    #screen.fill((0,0,0))
-    screen.blit(background_image, [0, 0])
-    random_color = (255,random.randint(0,180),0)
+    screen.blit(background_image, [0, 0]) #Utilise l'image de fond choisie comme background
+    random_color = (255,random.randint(0,180),0) #Couleurs aléatoire entre orange et rouge pour le feu
 
-    current_time = pygame.time.get_ticks()
-    if current_time > next_particle_time:
-        particles.append(Particle(random_color,random.randint(0,10)))
-        next_particle_time = current_time + 5
+    current_time = pygame.time.get_ticks() #Donne le temps en millisecondes depuis que la loop a été commencée
+    if current_time > next_particle_time: #Compare les deux temps pour ajouter une particule périodiquement
+        particles.append(Particle(random_color,random.randint(0,10))) #Ajoute une particule à la liste avec les valeurs choisies
+        next_particle_time = current_time + 5 
 
     Cloud1(30,40)
     Cloud2(220,50)
