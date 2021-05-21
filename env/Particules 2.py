@@ -6,11 +6,13 @@ pygame.init()
 clock = pygame.time.Clock()
 fps_limit = 60.0
 
-resx = 1600 #Dimensions of the window, aspect ratio of 16/9
-resy = 900
+resx = 626 #Dimensions of the window, aspect ratio of 16/9
+resy = 563
 screen = pygame.display.set_mode([resx,resy]) #Defines the window's size, here 1600x900 pixels
 
 next_particle_time = 0
+
+background_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\background_image.jpg')
 
 
 # -- Classes --
@@ -50,7 +52,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((0,0,0))
+    #screen.fill((0,0,0))
+    screen.blit(background_image, [0, 0])
     random_color = (255,random.randint(0,180),0)
 
 
