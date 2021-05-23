@@ -40,35 +40,75 @@ cloud_image_1 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Inform
 cloud_image_2 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud2.png')
 cloud_image_3 = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\cloud3.png')
 
-#Classes pour les 3 différents nuages avec leur position
-class Cloud1():
-    def __init__(self,x,y):
-        self.position_x = x
-        self.position_y = y
-        screen.blit(cloud_image_1,(x,y)) #Sert à afficher un objet qui contient une image
+#Classes pour les 3 différents nuages
+class Clouds1():
+    def __init__(self): #Variables initiales
+        self.position_x = 30
+        self.position_y = 40
 
-class Cloud2():
-    def __init__(self,x,y):
-        self.position_x = x
-        self.position_y = y
-        screen.blit(cloud_image_2,(x,y))
+    def update(self): #L'affiche dans la boucle
+        screen.blit(cloud_image_1,(self.position_x,self.position_y)) 
 
-class Cloud3():
-    def __init__(self,x,y):
-        self.position_x = x
-        self.position_y = y
-        screen.blit(cloud_image_3,(x,y))
+    def mouvements(self,x,y): #Déplacements du nuage
+        self.position_x += x
+        self.position_y += y
 
+    def bordure(self): #Si le nuage touche une des bordures, sa position est réinitialisée pour qu'ils ne disparaissent pas
+        if self.position_x < 0:
+            self.position_x = resx
+        if self.position_x > resx:
+            self.position_x = 0
+
+class Clouds2():
+    def __init__(self):
+        self.position_x = 210
+        self.position_y = 50
+
+    def update(self):
+        screen.blit(cloud_image_2,(self.position_x,self.position_y))
+
+    def mouvements(self,x,y):
+        self.position_x += x
+        self.position_y += y
+
+    def bordure(self):
+        if self.position_x < 0:
+            self.position_x = resx
+        if self.position_x > resx:
+            self.position_x = 0
+
+class Clouds3():
+    def __init__(self):
+        self.position_x = 470
+        self.position_y = 50
+
+    def update(self):
+        screen.blit(cloud_image_3,(self.position_x,self.position_y))
+
+    def mouvements(self,x,y):
+        self.position_x += x
+        self.position_y += y
+
+    def bordure(self):
+        if self.position_x < 0:
+            self.position_x = resx
+        if self.position_x > resx:
+            self.position_x = 0
+        
 
 firecamp_image = pygame.image.load(r'C:\Users\yannd\OneDrive\Projet Pygame Informatique OC 2021\env\firecamp.png') #Image de la bûche
 
-class Firecamp():
+class Firecamp(): #Classe du feu de camp
     def __init__(self):
-        screen.blit(firecamp_image,(250,413))
+        screen.blit(firecamp_image,(266,413)) #Affiche le feu de camp
 
 
 
 # -- Objets --
+
+Cloud1 = Clouds1()
+Cloud2 = Clouds2()
+Cloud3 = Clouds3()
 
 # -- Listes --
 
@@ -89,23 +129,39 @@ while running:
     current_time = pygame.time.get_ticks() #Donne le temps en millisecondes depuis que la loop a été commencée
     if current_time > next_particle_time: #Compare les deux temps pour ajouter une particule périodiquement
         particles.append(Particle(random_color,random.randint(0,10))) #Ajoute une particule à la liste avec les valeurs choisies
-        next_particle_time = current_time + 5 
+        next_particle_time = current_time + 15
 
-    Cloud1(30,40)
-    Cloud2(220,50)
-    Cloud3(470,50)
+    #Mouvements pour les 3 nuages avec le clavier
+    if pygame.key.get_pressed()[pygame.K_RIGHT] == True:
+        Cloud1.mouvements(1,0)
+    if pygame.key.get_pressed()[pygame.K_LEFT] == True:
+        Cloud1.mouvements(-1,0)
+    if pygame.key.get_pressed()[pygame.K_RIGHT] == True:
+        Cloud2.mouvements(1,0)
+    if pygame.key.get_pressed()[pygame.K_LEFT] == True:
+        Cloud2.mouvements(-1,0)
+    if pygame.key.get_pressed()[pygame.K_RIGHT] == True:
+        Cloud3.mouvements(1,0)
+    if pygame.key.get_pressed()[pygame.K_LEFT] == True:
+        Cloud3.mouvements(-1,0)
 
-    Firecamp()
+    #Utilise update pour afficher les nuages et bordure pour la collision avec le bord de la fenêtre
+    Cloud1.update()
+    Cloud2.update()
+    Cloud3.update()
+    Cloud1.bordure()
+    Cloud2.bordure()
+    Cloud3.bordure()
 
-    for p in particles[:]:
+    Firecamp() #Feu de camp
+
+    for p in particles[:]: #Crée des particules en les ajoutant dans une liste
         p.update()
-        p.random_movement()
-        p.life()
-        if p.radius < 1:
+        p.random_movement() #Mouvement aléatoire des particules
+        p.life() #Réduit la taille des particules
+        if p.radius < 1: #Supprime les particules qui sont plus petites que 1 pixel pour libérer la RAM
             particles.remove(p)
-    print(len(particles))
 
-    pygame.display.set_caption("Le feuf    FPS : "+"{:.2f}".format(clock.get_fps())+"    n Particules : "+str(len(particles)))
-
+    pygame.display.set_caption("El Fuego    FPS : "+"{:.2f}".format(clock.get_fps())+"    n Particules : "+str(len(particles))) #Affiche le nom de la fenêtre, les FPS et le nombres de particules présentes 
     pygame.display.flip()   
 pygame.quit()
