@@ -6,7 +6,8 @@ pygame.init()   #Initialise pygame et définit une horloge interne de 60 image p
 clock = pygame.time.Clock()
 fps_limit = 60.0
 
-resx = 626 #Valeur des dimensions de la fenêtre (dimensions de l'image de fond)
+#Valeur des dimensions de la fenêtre (dimensions de l'image de fond)
+resx = 626
 resy = 563
 screen = pygame.display.set_mode([resx,resy]) #Définit la dimension de la fenêtre pour le programme
 
@@ -30,6 +31,10 @@ class Particle():
     def random_movement(self): #Sert à donner un mouvement aléatoire aux particules
         self.position_x += random.randint(-2,2)
         self.position_y -= random.randint(0,1)
+
+    def vent(self,x,y): #Donne un effet de vent aux particules quand on déplacera les nuages
+        self.position_x += x
+        self.position_y += y
 
     def life(self): #Va être utile pour réduire la taille des particules graduellement
         self.radius -= 0.05
@@ -103,7 +108,6 @@ class Firecamp(): #Classe du feu de camp
         screen.blit(firecamp_image,(266,413)) #Affiche le feu de camp
 
 
-
 # -- Objets --
 
 Cloud1 = Clouds1()
@@ -131,7 +135,7 @@ while running:
         particles.append(Particle(random_color,random.randint(0,10))) #Ajoute une particule à la liste avec les valeurs choisies
         next_particle_time = current_time + 15
 
-    #Mouvements pour les 3 nuages avec le clavier
+    #Mouvement du vent pour les 3 nuages avec le clavier
     if pygame.key.get_pressed()[pygame.K_RIGHT] == True:
         Cloud1.mouvements(1,0)
     if pygame.key.get_pressed()[pygame.K_LEFT] == True:
@@ -144,6 +148,7 @@ while running:
         Cloud3.mouvements(1,0)
     if pygame.key.get_pressed()[pygame.K_LEFT] == True:
         Cloud3.mouvements(-1,0)
+
 
     #Utilise update pour afficher les nuages et bordure pour la collision avec le bord de la fenêtre
     Cloud1.update()
@@ -159,6 +164,10 @@ while running:
         p.update()
         p.random_movement() #Mouvement aléatoire des particules
         p.life() #Réduit la taille des particules
+        if pygame.key.get_pressed()[pygame.K_LEFT] == True: #Déplace les particules vers la gauche (vent)
+            p.vent(-0.6,0)
+        if pygame.key.get_pressed()[pygame.K_RIGHT] == True: #Déplace les particules vers la droite (vent)
+            p.vent(0.6,0)
         if p.radius < 1: #Supprime les particules qui sont plus petites que 1 pixel pour libérer la RAM
             particles.remove(p)
 
