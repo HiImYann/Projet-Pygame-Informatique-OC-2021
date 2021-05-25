@@ -1,3 +1,5 @@
+#VERSION 1 : Création des particules qui vont servir à faire le feu
+
 import pygame, random
 
 # -- Variables --
